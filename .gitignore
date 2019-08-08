@@ -1,0 +1,11 @@
+# Vim
+*.swp
+
+# Eclipse
+.project
+
+# Visual Studio Code
+.vscode/
+
+# OS X
+.DS_Store
