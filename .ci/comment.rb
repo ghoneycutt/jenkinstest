@@ -1,3 +1,4 @@
+require 'erb'
 require 'octokit'
 require 'yaml'
 
@@ -24,11 +25,12 @@ if output.nil?
   exit 1
 end
 
-`echo terraform_output = #{ENV['TERRAFORM_OUT']} >> debug`
-
 puts "\n\n=========repo = <#{repo}> :: pr_number = <#{pr_number}> :: org = <#{org}>\n"
 puts "output = #{output}"
+@template = File.read('./.ci/comment.erb')
+erb = ERB.new(@template).result(binding)
+puts "erb is\n\n#{erb}"
 client = Octokit::Client.new(:access_token => ENV['GH_CREDS_PSW'])
 user = client.user
 user.login
-client.add_comment("#{org}/#{repo}", pr_number, output)
+client.add_comment("#{org}/#{repo}", pr_number, erb)
