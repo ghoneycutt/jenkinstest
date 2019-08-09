@@ -17,8 +17,8 @@ pipeline {
         script {
           TERRAFORM_OUT = sh (
             script: './terraform --version',
-            returnStdout: true,
-            returnStatus: true
+            returnStdout: true
+//            returnStatus: true
           ) == 0
           FOO = sh (
             script: 'uname -a',
@@ -26,8 +26,8 @@ pipeline {
           )
           println TERRAFORM_OUT
           println FOO
-          sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
           sh 'echo \n\n\nFOO = $FOO\n\n\n'
+          sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
         }
         sh 'find $WORKSPACE'
         println TERRAFORM_OUT
