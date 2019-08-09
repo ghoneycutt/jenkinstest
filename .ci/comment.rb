@@ -23,7 +23,9 @@ output = ENV['TERRAFORM_OUT']
 @template = File.read('pr_template.erb')
 erb = ERB.new(@template).result(binding)
 
-`echo #{ENV['GH_CREDS_PSW']} >> debug`
+puts "\n\n=========repo = <#{repo}> :: pr_number = <#{pr_number}> :: org = <#{org}>\n"
+puts "output = #{output}"
+puts "erb = #{erb}"
 client = Octokit::Client.new(:access_token => ENV['GH_CREDS_PSW'])
 user = client.user
 user.login
