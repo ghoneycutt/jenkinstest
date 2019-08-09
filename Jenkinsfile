@@ -16,25 +16,15 @@ pipeline {
         sh 'ls'
         script {
           TERRAFORM_OUT = sh (
-            script: './terraform --version',
-            returnStdout: true
-//            returnStatus: true
-          ) == 0
-          FOO = sh (
+//            script: './terraform --version',
             script: 'uname -a',
             returnStdout: true
           )
-          bar = 'uname -a'
-          bar_out = command.execute().text
-          println bar_out
           println TERRAFORM_OUT
-          println FOO
-          sh 'echo \n\n\nFOO = $FOO\n\n\n'
           sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
         }
         sh 'find $WORKSPACE'
         println TERRAFORM_OUT
-        println FOO
         sh 'env > env.txt'
         sh 'cd .ci/ && bundle install && ruby comment.rb'
         script {
