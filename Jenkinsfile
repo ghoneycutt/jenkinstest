@@ -7,7 +7,7 @@ pipeline {
         sh 'find $WORKSPACE'
         sh 'env > env.txt'
         script {
-            result = readFile('env').trim()
+            result = readFile('env.txt').trim()
             println result
 //          for (String i : readFile('env.txt').split("\r?\n")) {
 //            println i
