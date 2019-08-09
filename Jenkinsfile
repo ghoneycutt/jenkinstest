@@ -20,8 +20,8 @@ pipeline {
             returnStdout: true,
             returnStatus: true
           ) == 0
-        }
         sh 'echo -e TERRAFORM_OUT = $TERRAFORM_OUT'
+        }
         sh 'find $WORKSPACE'
         sh 'env > env.txt'
         sh 'cd .ci/ && bundle install && ruby comment.rb'
