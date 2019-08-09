@@ -9,32 +9,22 @@ pipeline {
     stage('build') {
       steps {
         sh 'ruby --version'
-//        sh 'sudo apt-get -f install zip'
         sh 'wget -q $TERRAFORM_ZIP_URL'
         sh 'unzip -o terraform*.zip'
         sh 'pwd'
         sh 'ls'
         script {
           TERRAFORM_OUT = sh (
-//            script: './terraform --version',
-            script: 'uname -a > cmd.out',
+            script: './terraform --version > cmd.out',
             returnStdout: true
           )
-//          echo "TERRAFORM_OUT=$TERRAFORM_OUT"
-//          sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
         }
         sh 'find $WORKSPACE'
-//        println "TERRAFORM_OUT=$TERRAFORM_OUT"
-//        sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
         sh 'env > env.txt'
         sh 'cd .ci/ && bundle install && ruby comment.rb'
         script {
             result = readFile('env.txt').trim()
             println result
-            println TERRAFORM_OUT
-//          for (String i : readFile('env.txt').split("\r?\n")) {
-//            println i
-//          }
         }
       }
     }
