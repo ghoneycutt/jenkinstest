@@ -11,11 +11,13 @@ pipeline {
         sh 'yum -y install wget zip'
         sh 'wget $TERRAFORM_ZIP_URL'
         sh 'unzip terraform*.zip'
-        TERRAFORM_OUT = sh (
-          script: 'terraform --version',
-          returnStdout: true,
-          returnStatus: true
-        )
+        script {
+          TERRAFORM_OUT = sh (
+            script: 'terraform --version',
+            returnStdout: true,
+            returnStatus: true
+          )
+        }
         sh 'echo -e TERRAFORM_OUT = $TERRAFORM_OUT'
         sh 'find $WORKSPACE'
         sh 'env > env.txt'
