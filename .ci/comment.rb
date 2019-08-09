@@ -20,7 +20,7 @@ if org.nil?
 end
 
 output = ENV['TERRAFORM_OUT']
-@template = File.read('.ci/pr_template.erb')
+@template = File.read('pr_template.erb')
 erb = ERB.new(@template).result(binding)
 
 client = Octokit::Client.new(:access_token => ENV['GH_CREDS_PSW'])
