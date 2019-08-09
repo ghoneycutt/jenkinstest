@@ -20,6 +20,7 @@ if org.nil?
 end
 
 output = ENV['TERRAFORM_OUT']
+`echo -e terraform_output = #{ENV['TERRAFORM_OUT']} >> debug`
 @template = File.read('pr_template.erb')
 erb = ERB.new(@template).result(binding)
 
@@ -29,4 +30,5 @@ puts "erb = #{erb}"
 client = Octokit::Client.new(:access_token => ENV['GH_CREDS_PSW'])
 user = client.user
 user.login
-client.add_comment("#{org}/#{repo}", pr_number, erb)
+#client.add_comment("#{org}/#{repo}", pr_number, erb)
+client.add_comment("#{org}/#{repo}", pr_number, output)
