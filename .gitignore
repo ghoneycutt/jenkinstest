@@ -9,3 +9,8 @@
 
 # OS X
 .DS_Store
+
+# Terraform
+.terraform/
+plan
+*.tfstate
