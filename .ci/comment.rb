@@ -19,7 +19,12 @@ if org.nil?
   exit 1
 end
 
-output = ENV['TERRAFORM_OUT']
+output = File.read('../cmd.out')
+if output.nil?
+  puts 'Check contents of cmd.out'
+  exit 1
+end
+
 `echo terraform_output = #{ENV['TERRAFORM_OUT']} >> debug`
 @template = File.read('pr_template.erb')
 erb = ERB.new(@template).result(binding)

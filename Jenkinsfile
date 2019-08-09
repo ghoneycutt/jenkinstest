@@ -17,16 +17,15 @@ pipeline {
         script {
           TERRAFORM_OUT = sh (
 //            script: './terraform --version',
-            script: 'uname -a',
+            script: 'uname -a > cmd.out',
             returnStdout: true
           )
-          println "TERRAFORM_OUT=$TERRAFORM_OUT"
-          echo "TERRAFORM_OUT=$TERRAFORM_OUT"
-          sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
+//          echo "TERRAFORM_OUT=$TERRAFORM_OUT"
+//          sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
         }
         sh 'find $WORKSPACE'
-        println "TERRAFORM_OUT=$TERRAFORM_OUT"
-        sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
+//        println "TERRAFORM_OUT=$TERRAFORM_OUT"
+//        sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
         sh 'env > env.txt'
         sh 'cd .ci/ && bundle install && ruby comment.rb'
         script {
