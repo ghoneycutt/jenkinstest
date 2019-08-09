@@ -21,6 +21,7 @@ pipeline {
             returnStdout: true
           )
           println "TERRAFORM_OUT=$TERRAFORM_OUT"
+          echo "TERRAFORM_OUT=$TERRAFORM_OUT"
           sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
         }
         sh 'find $WORKSPACE'
