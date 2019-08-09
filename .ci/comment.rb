@@ -19,9 +19,9 @@ if org.nil?
   exit 1
 end
 
-output = File.read('../cmd.out')
+output = File.read(ARGV[0])
 if output.nil?
-  puts 'Check contents of cmd.out'
+  puts "Check contents of #{ARGV[0]}"
   exit 1
 end
 
