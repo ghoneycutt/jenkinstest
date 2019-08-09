@@ -13,7 +13,7 @@ pipeline {
         sh 'unzip terraform*.zip'
         TERRAFORM_OUT = sh (
           script: 'terraform --version',
-          returnStdout: true
+          returnStdout: true,
           returnStatus: true
         )
         sh 'echo -e TERRAFORM_OUT = $TERRAFORM_OUT'
