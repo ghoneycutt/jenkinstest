@@ -17,22 +17,10 @@ pipeline {
         script {
           sh './terraform --version > cmd.out.ver'
           sh 'ruby ./.ci/comment.rb cmd.out.ver'
-          sh './terraform init > cmd.out.init'
+          sh './terraform init -no-color > cmd.out.init'
           sh 'ruby ./.ci/comment.rb cmd.out.init'
-          sh './terraform plan -out plan > cmd.out.plan'
+          sh './terraform plan -out plan -no-color > cmd.out.plan'
           sh 'ruby ./.ci/comment.rb cmd.out.plan'
-          sh './terraform apply > cmd.out.apply'
-          sh 'ruby ./.ci/comment.rb cmd.out.apply'
-//          TERRAFORM_OUT = sh (
-//            script: './terraform --version > cmd.out',
-//            returnStdout: true
-//          )
-        }
-        sh 'find $WORKSPACE'
-        sh 'env > env.txt'
-        script {
-            result = readFile('env.txt').trim()
-            println result
         }
       }
     }
