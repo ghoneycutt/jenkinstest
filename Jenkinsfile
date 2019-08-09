@@ -5,11 +5,6 @@ pipeline {
     TERRAFORM_ZIP_URL = 'https://releases.hashicorp.com/terraform/0.12.6/terraform_0.12.6_linux_amd64.zip'
   }
   stages {
-    stage('CleanWorkspace') {
-      steps {
-        cleanWs()
-      }
-    }
     stage('build') {
       steps {
         sh 'ruby --version'
