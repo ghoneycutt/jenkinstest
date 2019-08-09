@@ -20,7 +20,7 @@ if org.nil?
 end
 
 output = ENV['TERRAFORM_OUT']
-`echo -e terraform_output = #{ENV['TERRAFORM_OUT']} >> debug`
+`echo terraform_output = #{ENV['TERRAFORM_OUT']} >> debug`
 @template = File.read('pr_template.erb')
 erb = ERB.new(@template).result(binding)
 

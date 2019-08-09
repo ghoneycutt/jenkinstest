@@ -12,9 +12,11 @@ pipeline {
 //        sh 'sudo apt-get -f install zip'
         sh 'wget -q $TERRAFORM_ZIP_URL'
         sh 'unzip -o terraform*.zip'
+        sh 'pwd'
+        sh 'ls'
         script {
           TERRAFORM_OUT = sh (
-            script: 'terraform --version',
+            script: './terraform --version',
             returnStdout: true,
             returnStatus: true
           ) == 0
