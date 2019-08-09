@@ -6,8 +6,10 @@ pipeline {
         sh 'ruby --version'
         sh 'find $WORKSPACE'
         sh 'env > env.txt'
-        for (String i : readFile('env.txt').split("\r?\n")) {
-          println i
+        script {
+          for (String i : readFile('env.txt').split("\r?\n")) {
+            println i
+          }
         }
       }
     }
