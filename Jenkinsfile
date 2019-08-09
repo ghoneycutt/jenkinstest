@@ -26,7 +26,8 @@ pipeline {
           )
           println TERRAFORM_OUT
           println FOO
-          sh 'echo -e \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
+          sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
+          sh 'echo \n\n\nFOO = $FOO\n\n\n'
         }
         sh 'find $WORKSPACE'
         println TERRAFORM_OUT
