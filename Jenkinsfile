@@ -8,7 +8,7 @@ pipeline {
     stage('build') {
       steps {
         sh 'ruby --version'
-        sh 'sudo apt-get -f install wget zip'
+        sh '/bin/sudo apt-get -f install wget zip'
         sh 'wget $TERRAFORM_ZIP_URL'
         sh 'unzip terraform*.zip'
         script {
@@ -21,7 +21,7 @@ pipeline {
         sh 'echo -e TERRAFORM_OUT = $TERRAFORM_OUT'
         sh 'find $WORKSPACE'
         sh 'env > env.txt'
-        sh 'ruby .ci/comment.rb'
+        sh 'cd .ci/ && bundle install && ruby comment.rb'
         script {
             result = readFile('env.txt').trim()
             println result
