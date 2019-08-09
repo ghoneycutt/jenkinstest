@@ -17,7 +17,7 @@ pipeline {
             script: 'terraform --version',
             returnStdout: true,
             returnStatus: true
-          )
+          ) == 0
         }
         sh 'echo -e TERRAFORM_OUT = $TERRAFORM_OUT'
         sh 'find $WORKSPACE'
