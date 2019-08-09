@@ -8,7 +8,7 @@ pipeline {
     stage('build') {
       steps {
         sh 'ruby --version'
-        sh 'apt-get -f install wget zip'
+        sh 'sudo apt-get -f install wget zip'
         sh 'wget $TERRAFORM_ZIP_URL'
         sh 'unzip terraform*.zip'
         script {
