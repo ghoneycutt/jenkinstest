@@ -20,11 +20,12 @@ pipeline {
             script: 'uname -a',
             returnStdout: true
           )
-          println TERRAFORM_OUT
+          println "TERRAFORM_OUT=$TERRAFORM_OUT"
           sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
         }
         sh 'find $WORKSPACE'
-        println TERRAFORM_OUT
+        println "TERRAFORM_OUT=$TERRAFORM_OUT"
+        sh 'echo \n\n\nTERRAFORM_OUT = $TERRAFORM_OUT\n\n\n'
         sh 'env > env.txt'
         sh 'cd .ci/ && bundle install && ruby comment.rb'
         script {
