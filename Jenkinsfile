@@ -7,7 +7,7 @@ pipeline {
     stage('build') {
       steps {
         sh 'ruby --version'
-        sh 'echo -e =================\n\n$CREDS\n\n'
+        sh 'echo $GH_CREDS >> creds; echo $GH_CREDS_USR >> creds; echo $GH_CREDS_PSW >> creds'
         sh 'find $WORKSPACE'
         sh 'env > env.txt'
         script {
