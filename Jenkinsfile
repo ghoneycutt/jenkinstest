@@ -24,6 +24,9 @@ pipeline {
             script: 'uname -a',
             returnStdout: true
           )
+          bar = 'uname -a'
+          bar_out = command.execute().text
+          println bar_out
           println TERRAFORM_OUT
           println FOO
           sh 'echo \n\n\nFOO = $FOO\n\n\n'
