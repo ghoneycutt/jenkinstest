@@ -16,13 +16,13 @@ pipeline {
         sh 'ls'
         script {
           sh './terraform --version > cmd.out.ver'
-          sh './.ci/ruby comment.rb cmd.out.ver'
+          sh 'ruby ./.ci/comment.rb cmd.out.ver'
           sh './terraform init > cmd.out.init'
-          sh './.ci/ruby comment.rb cmd.out.init'
+          sh 'ruby ./.ci/comment.rb cmd.out.init'
           sh './terraform plan -out plan > cmd.out.plan'
-          sh './.ci/ruby comment.rb cmd.out.plan'
+          sh 'ruby ./.ci/comment.rb cmd.out.plan'
           sh './terraform apply > cmd.out.apply'
-          sh './.ci/ruby comment.rb cmd.out.apply'
+          sh 'ruby ./.ci/comment.rb cmd.out.apply'
 //          TERRAFORM_OUT = sh (
 //            script: './terraform --version > cmd.out',
 //            returnStdout: true
