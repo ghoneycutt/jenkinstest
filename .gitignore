@@ -14,3 +14,4 @@
 .terraform/
 plan
 *.tfstate
+*.tfstate.backup
