@@ -10,6 +10,12 @@ pipeline {
     TERRAFORM_ZIP_URL = 'https://releases.hashicorp.com/terraform/0.12.6/terraform_0.12.6_linux_amd64.zip'
   }
   stages {
+    stage('debug') {
+      steps {
+        echo "Environment variables"
+        sh 'env'
+      }
+    }
     stage('build') {
       steps {
         // bake into container
