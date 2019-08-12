@@ -10,16 +10,20 @@ pipeline {
     TERRAFORM_ZIP_URL = 'https://releases.hashicorp.com/terraform/0.12.6/terraform_0.12.6_linux_amd64.zip'
   }
   stages {
+    stage('build') {
+      steps {
+        // bake into container
+        sh 'ruby --version' // debugging info
+        sh 'cd .ci && bundle install && cd ..' // install dependencies
+        sh 'wget -q $TERRAFORM_ZIP_URL' // download terraform
+        sh 'unzip -o terraform*.zip' // install terraform
+        sh './terraform --version'
+        // end of commands to bake into container
+      }
+    }
     stage('main') {
       steps {
         script {
-          // bake into container
-          sh 'ruby --version' // debugging info
-          sh 'cd .ci && bundle install && cd ..' // install dependencies
-          sh 'wget -q $TERRAFORM_ZIP_URL' // download terraform
-          sh 'unzip -o terraform*.zip' // install terraform
-          sh './terraform --version'
-          // end of commands to bake into container
           fmt_status = sh (
             script: './terraform fmt -check -diff > cmd.out.fmt',
             returnStatus: true
