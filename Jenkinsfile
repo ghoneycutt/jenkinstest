@@ -14,10 +14,10 @@ pipeline {
         sh 'unzip -o terraform*.zip'
         script {
           sh './terraform --version'
-          int fmt_status = sh (
+          fmt_status = sh (
             script: './terraform fmt -check -diff',
             returnStatus: true
-          ) == 0
+          )
           if (fmt_status == 0) {
             echo "zero -- fmt_status = $fmt_status"
           } else {
