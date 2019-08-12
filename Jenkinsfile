@@ -14,6 +14,15 @@ pipeline {
         sh 'unzip -o terraform*.zip'
         script {
           sh './terraform --version'
+          fmt_status == sh (
+            script: './terraform fmt -check -diff',
+            returnStatus: true
+          )
+          if (fmt_status == 0) {
+            echo "zero -- fmt_status = $fmt_status"
+          } else {
+            echo "non-zero -- fmt_status = $fmt_status"
+          }
           sh './terraform init -no-color'
           sh './terraform plan -out plan -no-color > cmd.out.plan'
           sh 'ruby ./.ci/comment.rb cmd.out.plan'
