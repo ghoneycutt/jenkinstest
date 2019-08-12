@@ -3,6 +3,10 @@ require 'octokit'
 require 'yaml'
 
 puts "CHANGE_URL is <#{ENV['CHANGE_URL']}>"
+if ENV['CHANGE_URL'].nil?
+  puts 'Environment variable CHANGE_URL is nil. Aborting'
+  exit 0
+end
 
 repo = ENV['CHANGE_URL'].split('/')[4]
 if repo.nil?
