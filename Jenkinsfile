@@ -24,7 +24,6 @@ pipeline {
             echo "non-zero -- fmt_status = $fmt_status"
             echo "will need to mark this as failed"
             sh 'ruby ./.ci/comment.rb cmd.out.fmt'
-            //sh 'false'
             error
           }
           sh './terraform init -no-color'
