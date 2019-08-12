@@ -26,7 +26,7 @@ pipeline {
           )
           echo "fmt_status = $fmt_status" // debugging info
           if (fmt_status != 0) {
-            sh 'ruby ./.ci/comment.rb cmd.out.fmt'
+            sh 'ruby ./.ci/comment.rb cmd.out.fmt diff'
             error
           }
           sh './terraform init -no-color'
