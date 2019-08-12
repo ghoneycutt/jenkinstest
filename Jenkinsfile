@@ -12,13 +12,9 @@ pipeline {
         sh 'cd .ci && bundle install && cd ..'
         sh 'wget -q $TERRAFORM_ZIP_URL'
         sh 'unzip -o terraform*.zip'
-        sh 'pwd'
-        sh 'ls'
         script {
-          sh './terraform --version > cmd.out.ver'
-          sh 'ruby ./.ci/comment.rb cmd.out.ver'
-          sh './terraform init -no-color > cmd.out.init'
-          sh 'ruby ./.ci/comment.rb cmd.out.init'
+          sh './terraform --version'
+          sh './terraform init -no-color'
           sh './terraform plan -out plan -no-color > cmd.out.plan'
           sh 'ruby ./.ci/comment.rb cmd.out.plan'
         }
