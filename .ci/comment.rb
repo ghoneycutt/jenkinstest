@@ -2,6 +2,8 @@ require 'erb'
 require 'octokit'
 require 'yaml'
 
+puts "CHANGE_URL is <#{ENV['CHANGE_URL']}>"
+
 repo = ENV['CHANGE_URL'].split('/')[4]
 if repo.nil?
   puts "CHANGE_URL is <#{ENV['CHANGE_URL']}> and repo cannot be determined."
