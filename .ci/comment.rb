@@ -25,8 +25,13 @@ if output.nil?
   exit 1
 end
 
+if not ARGV[1].nil?
+  lang = ARGV[1]
+end
+
 puts "\n\n=========repo = <#{repo}> :: pr_number = <#{pr_number}> :: org = <#{org}>\n"
-puts "output = #{output}"
+puts "output = <#{output}>"
+puts "lang = <#{lang}>"
 @template = File.read('./.ci/comment.erb')
 erb = ERB.new(@template).result(binding)
 puts "erb is\n\n#{erb}"
