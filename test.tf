@@ -8,4 +8,9 @@ resource "null_resource" "example1" {
     command = "puts 'else'"
     interpreter = ["ruby", "-e"]
   }
+
+  provisioner "local-exec" {
+    command = "puts 'asdf'"
+    interpreter = ["ruby", "-e"]
+  }
 }
