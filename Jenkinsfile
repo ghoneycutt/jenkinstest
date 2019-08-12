@@ -29,9 +29,9 @@ pipeline {
             returnStatus: true
           )
           echo "fmt_status = $fmt_status" // debugging info
-          if (fmt_status != 0) {
+          if (fmt_status != 0) { // on error, show the diff in the PR, else move along
             sh 'ruby ./.ci/comment.rb cmd.out.fmt diff'
-            //error
+            error("The terraform files have not been properly formatted.")
           }
         }
       }
