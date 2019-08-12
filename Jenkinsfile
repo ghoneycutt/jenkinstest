@@ -15,7 +15,7 @@ pipeline {
         script {
           sh './terraform --version'
           fmt_status = sh (
-            script: './terraform fmt -check -diff',
+            script: './terraform fmt -check -diff > cmd.out.fmt',
             returnStatus: true
           )
           if (fmt_status == 0) {
@@ -23,6 +23,7 @@ pipeline {
           } else {
             echo "non-zero -- fmt_status = $fmt_status"
             echo "will need to mark this as failed"
+            sh 'ruby ./.ci/comment.rb cmd.out.fmt'
             sh 'false'
           }
           sh './terraform init -no-color'
