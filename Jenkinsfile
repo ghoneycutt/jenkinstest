@@ -21,7 +21,7 @@ pipeline {
         // end of commands to bake into container
       }
     }
-    stage('main') {
+    stage('fmt') {
       steps {
         script {
           fmt_status = sh (
@@ -31,12 +31,20 @@ pipeline {
           echo "fmt_status = $fmt_status" // debugging info
           if (fmt_status != 0) {
             sh 'ruby ./.ci/comment.rb cmd.out.fmt diff'
-            error
+            //error
           }
-          sh './terraform init -no-color'
-          sh './terraform plan -out plan -no-color > cmd.out.plan'
-          sh 'ruby ./.ci/comment.rb cmd.out.plan'
         }
+      }
+    }
+    stage('init') {
+      steps {
+        sh './terraform init -no-color'
+      }
+    }
+    stage('plan') {
+      steps {
+        sh './terraform plan -out plan -no-color > cmd.out.plan'
+        sh 'ruby ./.ci/comment.rb cmd.out.plan'
       }
     }
   }
