@@ -23,17 +23,37 @@ pipeline {
         // end of commands to bake into container
       }
     }
+    stage('init') {
+      steps {
+        script {
+          init_status = sh (
+            script: './terraform init -no-color -input=false > cmd.out.init 2>&1',
+            returnStatus: true
+          )
+          echo "init_status = ${init_status}" // debugging info
+          output = readFile 'cmd.out.init'
+          echo "${output}" // debugging info
+          if (init_status != 0) { // on error, show the output in the PR, else move along
+            script {
+              pullRequest.comment("```\n${output}\n```")
+              error("'terraform init' returned non-zero.")
+            }
+          }
+        }
+      }
+    }
     stage('fmt') {
       steps {
         script {
           fmt_status = sh (
-            script: './terraform fmt -check -diff -recursive > cmd.out.fmt',
+            script: './terraform fmt -check -diff -recursive -no-color > cmd.out.fmt 2>&1',
             returnStatus: true
           )
-          echo "fmt_status = $fmt_status" // debugging info
+          echo "fmt_status = ${fmt_status}" // debugging info
+          output = readFile 'cmd.out.fmt'
+          echo "${output}" // debugging info
           if (fmt_status != 0) { // on error, show the diff in the PR, else move along
             script {
-              output = readFile 'cmd.out.fmt'
               pullRequest.comment("```diff\n${output}\n```")
               error("The terraform files have not been properly formatted.")
             }
@@ -41,17 +61,22 @@ pipeline {
         }
       }
     }
-    stage('init') {
-      steps {
-        sh './terraform init -no-color'
-      }
-    }
     stage('plan') {
       steps {
-        sh './terraform plan -out plan -no-color > cmd.out.plan'
         script {
-          output = readFile "cmd.out.plan"
+          plan_status = sh (
+            script: './terraform plan -out plan -no-color > cmd.out.plan 2>&1',
+            returnStatus: true
+          )
+          echo "plan_status = ${plan_status}" // debugging info
+          output = readFile 'cmd.out.plan'
+          echo "${output}" // debugging info
           pullRequest.comment("```\n${output}\n```")
+          if (plan_status != 0) { // fail build if plan returns non-zero
+            script {
+              error("'terraform plan' returned non-zero.")
+            }
+          }
         }
       }
     }
