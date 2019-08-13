@@ -1,7 +1,5 @@
 pipeline {
-  // Replace 'ruby' image with custom image. We could start with the official
-  // ruby image and then add terraform.
-  agent { docker { image 'ruby' } }
+  agent { docker { image 'jenkinsci/slave' } }
   environment {
     GITHUB_ORG = 'ghoneycutt'
     GH_CREDS = credentials('301c75f1-0f6f-4643-9c16-1dec83e489ab')
@@ -19,8 +17,6 @@ pipeline {
     stage('build') {
       steps {
         // bake into container
-        sh 'ruby --version' // debugging info
-        sh 'cd .ci && bundle install && cd ..' // install dependencies
         sh 'wget -q $TERRAFORM_ZIP_URL' // download terraform
         sh 'unzip -o terraform*.zip' // install terraform
         sh './terraform --version'
@@ -36,8 +32,11 @@ pipeline {
           )
           echo "fmt_status = $fmt_status" // debugging info
           if (fmt_status != 0) { // on error, show the diff in the PR, else move along
-            sh 'ruby ./.ci/comment.rb cmd.out.fmt diff'
-            error("The terraform files have not been properly formatted.")
+            script {
+              output = readFile 'cmd.out.fmt'
+              pullRequest.comment("```diff\n${output}\n```")
+              error("The terraform files have not been properly formatted.")
+            }
           }
         }
       }
@@ -50,7 +49,10 @@ pipeline {
     stage('plan') {
       steps {
         sh './terraform plan -out plan -no-color > cmd.out.plan'
-        sh 'ruby ./.ci/comment.rb cmd.out.plan'
+        script {
+          output = readFile "cmd.out.plan"
+          pullRequest.comment("```\n${output}\n```")
+        }
       }
     }
   }
