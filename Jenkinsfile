@@ -23,24 +23,6 @@ pipeline {
         // end of commands to bake into container
       }
     }
-    stage('fmt') {
-      steps {
-        script {
-          fmt_status = sh (
-            script: './terraform fmt -check -diff -recursive > cmd.out.fmt',
-            returnStatus: true
-          )
-          echo "fmt_status = ${fmt_status}" // debugging info
-          if (fmt_status != 0) { // on error, show the diff in the PR, else move along
-            script {
-              output = readFile 'cmd.out.fmt'
-              pullRequest.comment("```diff\n${output}\n```")
-              error("The terraform files have not been properly formatted.")
-            }
-          }
-        }
-      }
-    }
     stage('init') {
       steps {
         script {
@@ -53,7 +35,25 @@ pipeline {
             script {
               output = readFile 'cmd.out.init'
               pullRequest.comment("```\n${output}\n```")
-              error("The terraform files had errors.")
+              error("Terraform returned non-zero.")
+            }
+          }
+        }
+      }
+    }
+    stage('fmt') {
+      steps {
+        script {
+          fmt_status = sh (
+            script: './terraform fmt -check -diff -recursive -no-color > cmd.out.fmt',
+            returnStatus: true
+          )
+          echo "fmt_status = ${fmt_status}" // debugging info
+          if (fmt_status != 0) { // on error, show the diff in the PR, else move along
+            script {
+              output = readFile 'cmd.out.fmt'
+              pullRequest.comment("```diff\n${output}\n```")
+              error("The terraform files have not been properly formatted.")
             }
           }
         }
