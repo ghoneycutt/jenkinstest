@@ -37,7 +37,7 @@ pipeline {
             script {
               output = readFile 'cmd.out.init'
               pullRequest.comment("```\n${output}\n```")
-              error("Terraform returned non-zero.")
+              error("'terraform init' returned non-zero.")
             }
           }
         }
@@ -63,10 +63,19 @@ pipeline {
     }
     stage('plan') {
       steps {
-        sh './terraform plan -out plan -no-color > cmd.out.plan'
         script {
-          output = readFile "cmd.out.plan"
-          pullRequest.comment("```\n${output}\n```")
+          plan_status = sh (
+            script: './terraform plan -out /plan -no-color > cmd.out.plan',
+            returnStatus: true
+          )
+          echo "plan_status = ${plan_status}" // debugging info
+          if (plan_status != 0) { // on error, show the output in the PR, else move along
+            script {
+              output = readFile 'cmd.out.plan'
+              pullRequest.comment("```\n${output}\n```")
+              error("'terraform plan' returned non-zero.")
+            }
+          }
         }
       }
     }
