@@ -27,9 +27,7 @@ pipeline {
       steps {
         script {
           init_status = sh (
-            // `terraform init` prints errors to stderr as opposed to the rest
-            // of the commands that use stdout.
-            script: './terraform init -no-color -input=false 2> cmd.out.init',
+            script: './terraform init -no-color -input=false > cmd.out.init 2>&1',
             returnStatus: true
           )
           echo "init_status = ${init_status}" // debugging info
@@ -47,7 +45,7 @@ pipeline {
       steps {
         script {
           fmt_status = sh (
-            script: './terraform fmt -check -diff -recursive -no-color > cmd.out.fmt',
+            script: './terraform fmt -check -diff -recursive -no-color > cmd.out.fmt 2>&1',
             returnStatus: true
           )
           echo "fmt_status = ${fmt_status}" // debugging info
@@ -65,7 +63,7 @@ pipeline {
       steps {
         script {
           plan_status = sh (
-            script: './terraform plan -out /plan -no-color > cmd.out.plan',
+            script: './terraform plan -out /plan -no-color > cmd.out.plan 2>&1',
             returnStatus: true
           )
           echo "plan_status = ${plan_status}" // debugging info
