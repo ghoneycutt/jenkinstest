@@ -5,12 +5,12 @@ resource "null_resource" "example1" {
   }
 
   provisioner "local-exec" {
-    command = "puts 'else'"
+    command     = "puts 'else'"
     interpreter = ["ruby", "-e"]
   }
 
   provisioner "local-exec" {
-    command = "puts 'asdf'"
+    command     = "puts 'asdf'"
     interpreter = ["ruby", "-e"]
   }
 }
