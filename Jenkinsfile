@@ -72,7 +72,7 @@ pipeline {
           if (plan_status != 0) { // on error, show the output in the PR, else move along
             script {
               output = readFile 'cmd.out.plan'
-              echo $output // debugging in jenkins console
+              println $output // debugging in jenkins console
               pullRequest.comment("```\n${output}\n```")
               error("'terraform plan' returned non-zero.")
             }
