@@ -31,7 +31,7 @@ pipeline {
       steps {
         script {
           fmt_status = sh (
-            script: './terraform fmt -check -diff > cmd.out.fmt',
+            script: './terraform fmt -check -diff -recursive > cmd.out.fmt',
             returnStatus: true
           )
           echo "fmt_status = $fmt_status" // debugging info
