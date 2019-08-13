@@ -34,6 +34,7 @@ pipeline {
           if (init_status != 0) { // on error, show the output in the PR, else move along
             script {
               output = readFile 'cmd.out.init'
+              echo $output // debugging in jenkins console
               pullRequest.comment("```\n${output}\n```")
               error("'terraform init' returned non-zero.")
             }
@@ -52,6 +53,7 @@ pipeline {
           if (fmt_status != 0) { // on error, show the diff in the PR, else move along
             script {
               output = readFile 'cmd.out.fmt'
+              echo $output // debugging in jenkins console
               pullRequest.comment("```diff\n${output}\n```")
               error("The terraform files have not been properly formatted.")
             }
@@ -70,6 +72,7 @@ pipeline {
           if (plan_status != 0) { // on error, show the output in the PR, else move along
             script {
               output = readFile 'cmd.out.plan'
+              echo $output // debugging in jenkins console
               pullRequest.comment("```\n${output}\n```")
               error("'terraform plan' returned non-zero.")
             }
