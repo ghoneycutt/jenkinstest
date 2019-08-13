@@ -30,7 +30,7 @@ pipeline {
             script: './terraform fmt -check -diff -recursive > cmd.out.fmt',
             returnStatus: true
           )
-          echo "fmt_status = $fmt_status" // debugging info
+          echo "fmt_status = ${fmt_status}" // debugging info
           if (fmt_status != 0) { // on error, show the diff in the PR, else move along
             script {
               output = readFile 'cmd.out.fmt'
@@ -43,7 +43,20 @@ pipeline {
     }
     stage('init') {
       steps {
-        sh './terraform init -no-color'
+        script {
+          init_status = sh (
+            script: './terraform init -no-color -input=false > cmd.out.init',
+            returnStatus: true
+          )
+          echo "init_status = ${init_status}" // debugging info
+          if (init_status != 0) { // on error, show the output in the PR, else move along
+            script {
+              output = readFile 'cmd.out.init'
+              pullRequest.comment("```\n${output}\n```")
+              error("The terraform files had errors.")
+            }
+          }
+        }
       }
     }
     stage('plan') {
