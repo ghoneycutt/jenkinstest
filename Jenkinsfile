@@ -27,7 +27,9 @@ pipeline {
       steps {
         script {
           init_status = sh (
-            script: './terraform init -no-color -input=false > cmd.out.init',
+            // `terraform init` prints errors to stderr as opposed to the rest
+            // of the commands that use stdout.
+            script: './terraform init -no-color -input=false 2> cmd.out.init',
             returnStatus: true
           )
           echo "init_status = ${init_status}" // debugging info
