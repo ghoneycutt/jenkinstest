@@ -44,8 +44,8 @@ pipeline {
           echo "change_set_length = ${change_set_length}"
 
           for (i=0; i<change_set_length; i++) {
-            echo "i = ${i}"
-            if ( change_set[i] ==~ /\.tf$/ ) {
+            echo "i = ${i} :: change_set[i] = ${change_set[i]}"
+            if ( change_set[i] ==~ /.+\.(tf|tfvars)$/ ) { // ending in .tf or .tfvars
               echo "match"
             } else {
               echo "no match"
