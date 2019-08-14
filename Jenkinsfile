@@ -25,8 +25,10 @@ pipeline {
     }
     stage('determine_tf_dir') {
       steps {
-        project_map = readYaml (file: "project_map.yaml")
-        echo "project_map = ${project_map}"
+        script {
+          project_map = readYaml (file: "project_map.yaml")
+          echo "project_map = ${project_map}"
+        }
       }
     }
     stage('init') {
