@@ -17,7 +17,7 @@ pipeline {
     stage('install_dependencies') {
       steps {
         // bake into container
-        sh 'mkdir .ci' // create .ci directory
+        sh 'mkdir -p .ci' // create .ci directory
         sh 'wget -q $TERRAFORM_ZIP_URL' // download terraform
         sh 'unzip -o terraform*.zip -d .ci/' // install terraform
         sh './.ci/terraform --version'
