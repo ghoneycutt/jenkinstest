@@ -54,6 +54,8 @@ pipeline {
             }
           }
           echo "tf_files = ${tf_files}"
+          tf_files_uniq = tf_files.unique()
+          echo "tf_files_uniq = ${tf_files_uniq}"
         }
       }
     }
