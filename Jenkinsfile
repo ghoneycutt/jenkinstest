@@ -46,9 +46,9 @@ pipeline {
           for (i=0; i<change_set_length; i++) {
             echo "i = ${i} :: change_set[i] = ${change_set[i]}"
             if ( change_set[i] ==~ /.+\.(tf|tfvars)$/ ) { // ending in .tf or .tfvars
-              echo "match"
-            } else {
-              echo "no match"
+              //echo "match"
+              dirname = Paths.get(change_set[i]).getParent().toString();
+              echo "dirname = ${dirname}"
             }
           }
         }
