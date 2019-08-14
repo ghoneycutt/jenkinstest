@@ -45,7 +45,7 @@ pipeline {
 
           for (i=0; i<change_set_length; i++) {
             echo "i = ${i}"
-            if change_set[i] ==~ /\.tf$/ {
+            if ( change_set[i] ==~ /\.tf$/ ) {
               echo "match"
             } else {
               echo "no match"
