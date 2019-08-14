@@ -40,8 +40,10 @@ pipeline {
           // expedite development.
           change_set = readYaml (file: "l1.yaml")
           echo "change_set = ${change_set}"
+          change_set_length = change_set.length
+          echo "change_set_length = ${change_set_length}"
 
-          for (i=0; i<change_set.length - 1; i++) {
+          for (i=0; i<change_set_length - 1; i++) {
             echo "i = ${i}"
           }
         }
