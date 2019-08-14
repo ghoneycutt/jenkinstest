@@ -25,7 +25,7 @@ pipeline {
     }
     stage('determine_tf_dir') {
       steps {
-        project_map = readYaml "project_map.yaml"
+        def project_map = readYaml "project_map.yaml"
         echo "project_map = ${project_map}"
       }
     }
