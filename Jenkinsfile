@@ -1,3 +1,9 @@
+// plugins:
+//    Docker Pipeline (docker-workflow): 1.19
+//    GitHub Branch Source Plugin (github-branch-source): 2.5.5
+//    Pipeline: GitHub (pipeline-github): 2.5
+//    Pipeline Utility Steps (pipeline-utility-steps): 2.3.0
+//
 pipeline {
   agent { docker { image 'jenkinsci/slave' } }
   environment {
