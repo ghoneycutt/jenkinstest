@@ -43,14 +43,17 @@ pipeline {
           change_set_length = change_set.size()
           echo "change_set_length = ${change_set_length}"
 
+          def tf_files = []
           for (i=0; i<change_set_length; i++) {
-            echo "i = ${i} :: change_set[i] = ${change_set[i]}"
+            //echo "i = ${i} :: change_set[i] = ${change_set[i]}"
             if ( change_set[i] ==~ /.+\.(tf|tfvars)$/ ) { // ending in .tf or .tfvars
               //echo "match"
               def dirname = java.nio.file.Paths.get(change_set[i]).getParent().toString();
               echo "dirname = ${dirname}"
+              tf_files << dirname
             }
           }
+          echo "tf_files = ${tf_files}"
         }
       }
     }
