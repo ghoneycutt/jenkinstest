@@ -47,7 +47,7 @@ pipeline {
             echo "i = ${i} :: change_set[i] = ${change_set[i]}"
             if ( change_set[i] ==~ /.+\.(tf|tfvars)$/ ) { // ending in .tf or .tfvars
               //echo "match"
-              dirname = Paths.get(change_set[i]).getParent().toString();
+              def dirname = java.nio.file.Paths.get(change_set[i]).getParent().toString();
               echo "dirname = ${dirname}"
             }
           }
