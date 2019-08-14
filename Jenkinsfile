@@ -43,8 +43,13 @@ pipeline {
           change_set_length = change_set.size()
           echo "change_set_length = ${change_set_length}"
 
-          for (i=0; i<change_set_length - 1; i++) {
+          for (i=0; i<change_set_length; i++) {
             echo "i = ${i}"
+            if change_set[i] ==~ /\.tf$/ {
+              echo "match"
+            } else {
+              echo "no match"
+            }
           }
         }
       }
