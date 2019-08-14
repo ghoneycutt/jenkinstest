@@ -1,0 +1,4 @@
+---
+- 'terraform/levels/1/2/foo.tf'
+- 'terraform/levels/1/2/3/bar.tf'
+- 'README.md'
