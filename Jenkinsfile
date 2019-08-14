@@ -35,6 +35,15 @@ pipeline {
         script {
           project_map = readYaml (file: "project_map.yaml")
           echo "project_map = ${project_map}"
+
+          // The change_set will come from `git diff`. Using yaml files now to
+          // expedite development.
+          change_set = readYaml (file: "l1_map.yaml")
+          echo "change_set = ${change_set}"
+
+          for (i=0; i<change_set.length - 1; i++) {
+            echo "i = ${i}"
+          }
         }
       }
     }
