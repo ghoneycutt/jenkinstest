@@ -1,0 +1,4 @@
+---
+- 'terraform/foo.tf'
+- 'terraform/bar.tf'
+- 'README.md'

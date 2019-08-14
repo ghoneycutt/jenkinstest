@@ -1,0 +1,4 @@
+---
+- 'foo.tf'
+- 'bar.tf'
+- 'README.md'

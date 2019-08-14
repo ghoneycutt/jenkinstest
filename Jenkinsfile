@@ -1,3 +1,9 @@
+// plugins:
+//    Docker Pipeline (docker-workflow): 1.19
+//    GitHub Branch Source Plugin (github-branch-source): 2.5.5
+//    Pipeline: GitHub (pipeline-github): 2.5
+//    Pipeline Utility Steps (pipeline-utility-steps): 2.3.0
+//
 pipeline {
   agent { docker { image 'jenkinsci/slave' } }
   environment {
@@ -14,20 +20,50 @@ pipeline {
         sh 'env'
       }
     }
-    stage('build') {
+    stage('install_dependencies') {
       steps {
         // bake into container
+        sh 'mkdir -p .ci' // create .ci directory
         sh 'wget -q $TERRAFORM_ZIP_URL' // download terraform
-        sh 'unzip -o terraform*.zip' // install terraform
-        sh './terraform --version'
+        sh 'unzip -o terraform*.zip -d .ci/' // install terraform
+        sh './.ci/terraform --version'
         // end of commands to bake into container
+      }
+    }
+    stage('determine_tf_dir') {
+      steps {
+        script {
+          project_map = readYaml (file: "project_map.yaml")
+          echo "project_map = ${project_map}"
+
+          // The change_set will come from `git diff`. Using yaml files now to
+          // expedite development.
+          change_set = readYaml (file: "l1.yaml")
+          echo "change_set = ${change_set}"
+          change_set_length = change_set.size()
+          echo "change_set_length = ${change_set_length}"
+
+          def tf_files = []
+          for (i=0; i<change_set_length; i++) {
+            //echo "i = ${i} :: change_set[i] = ${change_set[i]}"
+            if ( change_set[i] ==~ /.+\.(tf|tfvars)$/ ) { // ending in .tf or .tfvars
+              //echo "match"
+              def dirname = java.nio.file.Paths.get(change_set[i]).getParent().toString();
+              echo "dirname = ${dirname}"
+              tf_files << dirname
+            }
+          }
+          echo "tf_files = ${tf_files}"
+          tf_files_uniq = tf_files.unique()
+          echo "tf_files_uniq = ${tf_files_uniq}"
+        }
       }
     }
     stage('init') {
       steps {
         script {
           init_status = sh (
-            script: './terraform init -no-color -input=false > cmd.out.init 2>&1',
+            script: './.ci/terraform init -no-color -input=false > cmd.out.init 2>&1',
             returnStatus: true
           )
           echo "init_status = ${init_status}" // debugging info
@@ -46,7 +82,7 @@ pipeline {
       steps {
         script {
           fmt_status = sh (
-            script: './terraform fmt -check -diff -recursive -no-color > cmd.out.fmt 2>&1',
+            script: './.ci/terraform fmt -check -diff -recursive -no-color > cmd.out.fmt 2>&1',
             returnStatus: true
           )
           echo "fmt_status = ${fmt_status}" // debugging info
@@ -65,7 +101,7 @@ pipeline {
       steps {
         script {
           plan_status = sh (
-            script: './terraform plan -out plan -no-color > cmd.out.plan 2>&1',
+            script: './.ci/terraform plan -out plan -no-color > cmd.out.plan 2>&1',
             returnStatus: true
           )
           echo "plan_status = ${plan_status}" // debugging info
