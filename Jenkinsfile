@@ -14,13 +14,19 @@ pipeline {
         sh 'env'
       }
     }
-    stage('build') {
+    stage('install_dependencies') {
       steps {
         // bake into container
         sh 'wget -q $TERRAFORM_ZIP_URL' // download terraform
         sh 'unzip -o terraform*.zip' // install terraform
         sh './terraform --version'
         // end of commands to bake into container
+      }
+    }
+    stage('determine_tf_dir') {
+      steps {
+        project_map = readYaml "project_map.yaml"
+        echo "project_map = ${project_map}"
       }
     }
     stage('init') {
