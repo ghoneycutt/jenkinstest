@@ -17,9 +17,10 @@ pipeline {
     stage('install_dependencies') {
       steps {
         // bake into container
+        sh 'mkdir .ci' // create .ci directory
         sh 'wget -q $TERRAFORM_ZIP_URL' // download terraform
-        sh 'unzip -o terraform*.zip' // install terraform
-        sh './terraform --version'
+        sh 'unzip -o terraform*.zip -d .ci/' // install terraform
+        sh './.ci/terraform --version'
         // end of commands to bake into container
       }
     }
@@ -35,7 +36,7 @@ pipeline {
       steps {
         script {
           init_status = sh (
-            script: './terraform init -no-color -input=false > cmd.out.init 2>&1',
+            script: './.ci/terraform init -no-color -input=false > cmd.out.init 2>&1',
             returnStatus: true
           )
           echo "init_status = ${init_status}" // debugging info
@@ -54,7 +55,7 @@ pipeline {
       steps {
         script {
           fmt_status = sh (
-            script: './terraform fmt -check -diff -recursive -no-color > cmd.out.fmt 2>&1',
+            script: './.ci/terraform fmt -check -diff -recursive -no-color > cmd.out.fmt 2>&1',
             returnStatus: true
           )
           echo "fmt_status = ${fmt_status}" // debugging info
@@ -73,7 +74,7 @@ pipeline {
       steps {
         script {
           plan_status = sh (
-            script: './terraform plan -out plan -no-color > cmd.out.plan 2>&1',
+            script: './.ci/terraform plan -out plan -no-color > cmd.out.plan 2>&1',
             returnStatus: true
           )
           echo "plan_status = ${plan_status}" // debugging info
