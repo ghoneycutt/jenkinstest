@@ -1,5 +1,13 @@
 pipeline {
-  agent { docker { image 'jenkinsci/slave' } }
+
+  agent {
+    docker {
+#      label 'docker'
+      image 'gold.artifactory.corp.creditkarma.com/infra/centos7-base-datacenter:prod'
+#      registryUrl 'https://myregistry.com/'
+#      registryCredentialsId 'myPredefinedCredentialsInJenkins'
+    }
+  }
   environment {
     GITHUB_ORG = 'ghoneycutt'
     GH_CREDS = credentials('301c75f1-0f6f-4643-9c16-1dec83e489ab')
